@@ -19,20 +19,9 @@
 				</form>
 			</div>
 			<div class="card-footer text-muted">2 days ago</div>
+			<footer class="card-footer">
+				<a href="/campgrounds">All campgrounds</a>
+			</footer>
 		</div>
 		</col>
 	</div>
-	<h1><%= campground.title %></h1>
-	<h2><%= campground.location %></h2>
-	<img src="<%= campground.image%>" alt="">
-	<p> <%= campground.description %>
-		<a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-	</p>
-	<p>
-	<form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-		<button>Delete</button>
-	</form>
-	</p>
-	<footer>
-		<a href="/campgrounds">All campgrounds</a>
-	</footer>
