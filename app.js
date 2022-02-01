@@ -55,13 +55,10 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 app.use((req,res,next) => {
+	res.locals.currentUser = req.user
 	res.locals.success = req.flash('success');
 	res.locals.error = req.flash('error')
 	next();
-})
-
-app.get('/fakeUser', async (req,res) => {
-	const user = new User({email: ''})
 })
 
 app.use('/', UsersRoutes)
@@ -72,14 +69,13 @@ app.get("/", (req, res) => {
 	res.render("home");
 });
 
-app.all('*', (req,res,next)=> {
+app.all('*', (req,res,next) => {
 	next(new ExpressError('Page not Found', 404))
 })
 
 app.use((err, req, res, next) => {
 	const {statusCode = 500} = err;
 	if(!err.message) err.message = 'Oh no, Something Went Wrong'
-	console.log(err)
 	res.status(statusCode).render('error', { err });
 });
 
