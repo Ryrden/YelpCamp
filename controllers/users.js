@@ -1,3 +1,4 @@
+const campground = require('../models/campground')
 const User = require('../models/user')
 
 module.exports.renderRegister = (req,res) => {
@@ -35,4 +36,10 @@ module.exports.logout = (req,res) => {
     req.logout();
     req.flash('success', "Goodbye")
     res.redirect('/campgrounds')
+}
+
+module.exports.userCampgrounds = async (req,res) => {
+    const { _id }  = res.locals.currentUser;
+    const campgrounds = (await campground.find({author: {$in: _id}})).reverse()
+    res.render('users/campgrounds.ejs', {campgrounds})
 }

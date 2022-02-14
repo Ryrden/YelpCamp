@@ -1,7 +1,7 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
 	container: "cluster-map",
-	style: "mapbox://styles/mapbox/light-v10",
+	style: "mapbox://styles/mapbox/dark-v10",
 	center: [27.211031, 2.8739074], //2.8739074855785685, 27.21103180092514
 	zoom: 1.4,
 });
@@ -33,7 +33,7 @@ map.on("load", () => {
 			//   * Blue, 20px circles when point count is less than 100
 			//   * Yellow, 30px circles when point count is between 100 and 750
 			//   * Pink, 40px circles when point count is greater than or equal to 750
-			"circle-color": ["step", ["get", "point_count"], "#C5E1A5", 10, "#26A69A", 30, "#388E3C"],
+			"circle-color": ["step", ["get", "point_count"], "#56cfe1", 10, "#5390d9", 30, "#5e60ce"],
 			"circle-radius": ["step", ["get", "point_count"], 15, 10, 20, 30, 25],
 		},
 	});
