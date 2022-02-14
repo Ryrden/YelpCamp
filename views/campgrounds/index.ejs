@@ -15,7 +15,7 @@
 				<% } %>
 				<div class="card-body">
 					<h5 class="card-title bold"><%= campground.title %></h5>
-					<p class="card-text fw-light"><%= campground.description %> </p>
+					<p class="card-text fw-light"><%= campground.description.substring(0,150) %>... </p>
 					<p class="card-text fw-light">
 						<small class="text-muted"><%= campground.location %> </small>
 					</p>
