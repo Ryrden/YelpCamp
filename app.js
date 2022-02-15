@@ -12,12 +12,17 @@ const methodOverride = require("method-override");
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
+const mongoSanitize = require('express-mongo-sanitize')
 
 const UsersRoutes = require('./routes/users')
 const campgroundsRoutes = require('./routes/campgrounds')
 const reviewsRoutes = require('./routes/reviews')
 
-mongoose.connect("mongodb://localhost:27017/yelp-camp");
+const MongoDBStore = require('connect-mongo')
+
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp"
+
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -34,10 +39,26 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({extended: true})); //to send forms
 app.use(methodOverride("_method")); //to do "fakes" PUT,DELETE, etc
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(mongoSanitize({
+	replaceWith: '_'
+}))
+
+const secret = process.env.SECRET || 'ThisShouldBeaBetterSecret!'
+
+const store = MongoDBStore.create ({
+	mongoUrl: dbUrl,
+	secret,
+	touchAfter: 24 * 60 * 60
+})
+
+store.on("error", function (e){
+	console.log("SESSION STORE ERROR",e)
+})
 
 const WeekMiliSecond = 1000 * 60 * 60 * 24 * 7
 const sessionConfig = {
-	secret: 'ThisShouldBeaBetterSecret!',
+	store,
+	secret,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
@@ -82,6 +103,7 @@ app.use((err, req, res, next) => {
 	res.status(statusCode).render('error', { err });
 });
 
-app.listen(3000, () => {
-	console.log("Server is Online on port 3000");
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+	console.log(`Server is Online on port ${port}`);
 });
