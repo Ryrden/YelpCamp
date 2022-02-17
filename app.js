@@ -12,8 +12,11 @@ const methodOverride = require("method-override");
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
+
+//Security
 const mongoSanitize = require('express-mongo-sanitize')
 
+//Routes
 const UsersRoutes = require('./routes/users')
 const campgroundsRoutes = require('./routes/campgrounds')
 const reviewsRoutes = require('./routes/reviews')
@@ -40,7 +43,7 @@ app.use(express.urlencoded({extended: true})); //to send forms
 app.use(methodOverride("_method")); //to do "fakes" PUT,DELETE, etc
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize({
-	replaceWith: '_'
+    replaceWith: '_'
 }))
 
 const secret = process.env.SECRET || 'ThisShouldBeaBetterSecret!'
